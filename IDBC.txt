@@ -1,0 +1,92 @@
+create database idbcBank;
+use idbcBank;
+
+create table customer(
+customerId double not null, 
+customerName varchar(100) not null,
+customerPhone varchar(13) not null,
+customerEmail varchar(100) not null,
+customerAddress varchar(150) not null,
+primary key(customerId)
+);
+
+create table accounts(
+accountNumber double not null, 
+accountType varchar(100) not null,
+accountBalance varchar(13) not null,
+customerId double not null, 
+primary key(accountNumber),
+foreign key (customerId) references customer(customerId)
+);
+
+create table accountTransaction(
+transactionId double not null, 
+transactionDate varchar(100) not null,
+withdraw double not null,
+deposit double not null,
+customerId double not null, 
+primary key(transactionId),
+foreign key (customerId) references accounts(customerId)
+);
+
+
+insert into customer(customerId,customerName,customerPhone,customerEmail,customerAddress)
+values (1,"Dipak","9876543210","d@gmail.com","Dhenkanal,Odisha"),
+(2,"Sandeep","78985243610","s@gmail.com","puri,Odisha"),
+(3,"Ranjit","8524613970","r@gmail.com","Bhubaneswar,Odisha"),
+(4,"Mahaprasad","9056402801","m@gmail.com","Jajpur,Odisha"),
+(5,"Ashmin","8795463012","a@gmail.com","cuttack,Odisha");
+
+insert into accounts(accountNumber,accountType,accountBalance,customerId)
+values (987456123012,"Saving","8450",1),(123456789041,"Pay","5000",2),(852147963085,"Saving","9400",3),
+(976431258050,"Saving","18456",4),(648257931048,"Pay","4680",5);
+
+insert into accountTransaction(transactionId,transactionDate,withdraw,deposit,customerId)
+values (123,"2-4-2021",100,200,1),(456,"3-5-2020",200,450,2),(789,"20-5-2021",640,500,3),
+(012,"9-6-2021",400,600,4),(234,"2-4-2020",50,1000,5);
+
+
+alter table accounts add withdrawType varchar(50);
+alter table accounts add depositType varchar(50);
+
+update accounts set withdrawType="cheque" where customerId=1;
+update accounts set withdrawType="cash" where customerId=2;
+update accounts set withdrawType="cash" where customerId=3;
+update accounts set withdrawType="cheque" where customerId=4;
+update accounts set withdrawType="cash" where customerId=5;
+
+update accounts set depositType="cash" where customerId=1;
+update accounts set depositType="cash" where customerId=2;
+update accounts set depositType="cash" where customerId=3;
+update accounts set depositType="cheque" where customerId=4;
+update accounts set depositType="cash" where customerId=5;
+
+select * from accounts;
+select * from accounttransaction;
+
+Alter table accounts add updatedIntrestBalance varchar(20);
+
+#select a.accountBalance-t.withdraw from accounts a join accounttransaction t on a.customerId=t.customerId;
+
+UPDATE accounts a JOIN accounttransaction t on a.customerId=t.customerId
+set a.accountBalance = a.accountBalance - t.withdraw;
+
+ALTER TABLE accounts DROP COLUMN withdrawType;
+ALTER TABLE accounts DROP COLUMN depositType;
+
+Alter table accounttransaction add withdrawType varchar(20);
+Alter table accounttransaction add depositType varchar(20);
+
+update accounttransaction set withdrawType="cheque" where customerId=1;
+update accounttransaction set withdrawType="cash" where customerId=2;
+update accounttransaction set withdrawType="cash" where customerId=3;
+update accounttransaction set withdrawType="cheque" where customerId=4;
+update accounttransaction set withdrawType="cash" where customerId=5;
+
+update accounttransaction set depositType="cash" where customerId=1;
+update accounttransaction set depositType="cash" where customerId=2;
+update accounttransaction set depositType="cash" where customerId=3;
+update accounttransaction set depositType="cheque" where customerId=4;
+update accounttransaction set depositType="cash" where customerId=5;
+
+
